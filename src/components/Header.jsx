@@ -25,7 +25,24 @@ const Header = () => {
           {canPublish() && (
             <Link 
               to="/publicar" 
-              className="publish-btn"
+              style={{
+                color: '#dc2626',
+                textDecoration: 'none',
+                fontSize: '0.875rem',
+                fontWeight: '500',
+                padding: '0.5rem',
+                borderRadius: '0.25rem',
+                transition: 'color 0.2s ease',
+                opacity: 0.8
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.color = '#b91c1c';
+                e.target.style.opacity = '1';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.color = '#dc2626';
+                e.target.style.opacity = '0.8';
+              }}
             >
               Publicar
             </Link>
