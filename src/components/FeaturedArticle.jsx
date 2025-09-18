@@ -6,6 +6,16 @@ const FeaturedArticle = () => {
   const navigate = useNavigate();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleClick = () => {
     if (article) {
@@ -129,8 +139,8 @@ const FeaturedArticle = () => {
         </h1>
         
         <p className="featured-summary">
-          {article.summary && article.summary.split(' ').length > 23 
-            ? article.summary.split(' ').slice(0, 23).join(' ') + '...'
+          {article.summary && article.summary.split(' ').length > (isMobile ? 10 : 23) 
+            ? article.summary.split(' ').slice(0, isMobile ? 10 : 23).join(' ') + '...'
             : article.summary
           }
         </p>
