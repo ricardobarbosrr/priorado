@@ -133,6 +133,12 @@ body {
   background: #b91c1c;
 }
 
+/* Loading spinner animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Navigation Styles */
 .navigation {
   background: #0f172a;

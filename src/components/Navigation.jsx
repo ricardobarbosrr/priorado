@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import SearchModal from './SearchModal';
 
 const Navigation = () => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  
   const categories = [
     'Últimas',
     'Política',
@@ -26,6 +29,40 @@ const Navigation = () => {
               {category}
             </a>
           ))}
+          
+          {/* Search Icon Button */}
+          <button 
+            className="nav-search-btn"
+            onClick={() => setIsSearchOpen(true)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'white',
+              cursor: 'pointer',
+              padding: '0.5rem',
+              marginLeft: '1rem',
+              borderRadius: '0.25rem',
+              transition: 'background-color 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+            title="Pesquisar"
+          >
+            <svg
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
         </div>
         
         <div className="nav-date">
@@ -37,6 +74,12 @@ const Navigation = () => {
           })}
         </div>
       </div>
+      
+      {/* Search Modal */}
+      <SearchModal 
+        isOpen={isSearchOpen} 
+        onClose={() => setIsSearchOpen(false)} 
+      />
     </nav>
   );
 };

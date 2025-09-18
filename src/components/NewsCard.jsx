@@ -1,18 +1,40 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const NewsCard = ({ article, variant = 'default' }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/artigo/${article._id}`);
+  };
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('pt-BR', {
-      day: 'numeric',
-      month: 'short',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    if (!dateString) return 'Data não disponível';
+    
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return 'Data inválida';
+      }
+      
+      return date.toLocaleDateString('pt-BR', {
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return 'Data inválida';
+    }
   };
 
   if (variant === 'sidebar') {
     return (
-      <div className="sidebar-content">
+      <div 
+        className="sidebar-content"
+        onClick={handleClick}
+        style={{ cursor: 'pointer' }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
           <span className="sidebar-category">
             {article.category}
@@ -25,14 +47,18 @@ const NewsCard = ({ article, variant = 'default' }) => {
         </h3>
         
         <time className="sidebar-time">
-          {formatDate(article.publishedAt)}
+          {formatDate(article.publishedAt || article.createdAt)}
         </time>
       </div>
     );
   }
 
   return (
-    <article className="news-card">
+    <article 
+      className="news-card"
+      onClick={handleClick}
+      style={{ cursor: 'pointer' }}
+    >
       {article.imageUrl && (
         <img
           src={article.imageUrl}
@@ -61,7 +87,7 @@ const NewsCard = ({ article, variant = 'default' }) => {
         
         <div className="news-meta">
           <span>Por {article.author}</span>
-          <time>{formatDate(article.publishedAt)}</time>
+          <time>{formatDate(article.publishedAt || article.createdAt)}</time>
         </div>
       </div>
     </article>
