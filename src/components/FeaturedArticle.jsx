@@ -129,7 +129,10 @@ const FeaturedArticle = () => {
         </h1>
         
         <p className="featured-summary">
-          {article.summary}
+          {article.summary && article.summary.split(' ').length > 23 
+            ? article.summary.split(' ').slice(0, 23).join(' ') + '...'
+            : article.summary
+          }
         </p>
         
         <div className="article-meta">
