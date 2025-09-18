@@ -4,6 +4,16 @@ import WeatherWidget from './WeatherWidget';
 import { articlesAPI } from '../services/api';
 
 const Sidebar = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const [popularArticles, setPopularArticles] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +34,12 @@ const Sidebar = () => {
   }, []);
 
   return (
-    <aside className="sidebar">
+    <aside className="sidebar" style={{
+      width: isMobile ? '100%' : '300px',
+      marginTop: isMobile ? '2rem' : '0',
+      borderTop: isMobile ? '1px solid #e5e7eb' : 'none',
+      paddingTop: isMobile ? '2rem' : '0'
+    }}>
       <h2 className="sidebar-title">
         Mais Lidas
       </h2>

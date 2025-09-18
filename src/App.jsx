@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Header from './components/Header';
@@ -15,6 +15,16 @@ import './index.css';
 
 function App() {
   const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <AuthProvider>
@@ -71,13 +81,14 @@ function App() {
 
                   <div className="content-grid" style={{
                     display: 'flex',
+                    flexDirection: isMobile ? 'column' : 'row',
                     justifyContent: sidebarVisible ? 'space-between' : 'center',
                     gap: sidebarVisible ? '2rem' : '0',
                     transition: 'all 0.3s ease'
                   }}>
                     <div className="main-column" style={{
-                      maxWidth: sidebarVisible ? 'none' : '800px',
-                      width: sidebarVisible ? 'auto' : '100%'
+                      maxWidth: (sidebarVisible && !isMobile) ? 'none' : '800px',
+                      width: (sidebarVisible && !isMobile) ? 'auto' : '100%'
                     }}>
                       <FeaturedArticle />
                       <NewsGrid />
