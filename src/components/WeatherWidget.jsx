@@ -2,92 +2,48 @@ import React, { useState, useEffect } from 'react';
 
 const WeatherWidget = () => {
   const [weather, setWeather] = useState(null);
-  const [location, setLocation] = useState(null);
+  const [location, setLocation] = useState('São Paulo');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
-  // OpenWeatherMap API key - você precisará criar uma conta gratuita em openweathermap.org
-  const API_KEY = (typeof process !== 'undefined' && process.env?.REACT_APP_WEATHER_API_KEY) || 'YOUR_API_KEY_HERE';
+  // Dados estáticos do clima para diferentes cidades
+  const staticWeatherData = {
+    'São Paulo': {
+      main: { temp: 23 },
+      weather: [{ description: 'parcialmente nublado', icon: '02d' }]
+    },
+    'Rio de Janeiro': {
+      main: { temp: 28 },
+      weather: [{ description: 'ensolarado', icon: '01d' }]
+    },
+    'Brasília': {
+      main: { temp: 26 },
+      weather: [{ description: 'céu limpo', icon: '01d' }]
+    },
+    'Curitiba': {
+      main: { temp: 18 },
+      weather: [{ description: 'nublado', icon: '03d' }]
+    },
+    'Belo Horizonte': {
+      main: { temp: 25 },
+      weather: [{ description: 'poucas nuvens', icon: '02d' }]
+    }
+  };
 
   useEffect(() => {
-    const getLocationAndWeather = async () => {
-      try {
-        setLoading(true);
-        
-        // Primeiro, tenta obter a localização do usuário
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords;
-              await fetchWeatherByCoords(latitude, longitude);
-            },
-            async (error) => {
-              console.log('Geolocation error:', error);
-              // Fallback para IP-based location ou cidade padrão
-              await fetchWeatherByCity('São Paulo');
-            }
-          );
-        } else {
-          // Navegador não suporta geolocalização
-          await fetchWeatherByCity('São Paulo');
-        }
-      } catch (error) {
-        console.error('Error getting weather:', error);
-        setError('Erro ao carregar clima');
-        setLoading(false);
-      }
-    };
-
-    getLocationAndWeather();
+    // Simula um carregamento de dados
+    const timer = setTimeout(() => {
+      // Escolhe uma cidade aleatória da lista
+      const cities = Object.keys(staticWeatherData);
+      const randomCity = cities[Math.floor(Math.random() * cities.length)];
+      
+      setLocation(randomCity);
+      setWeather(staticWeatherData[randomCity]);
+      setLoading(false);
+    }, 1000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
-  const fetchWeatherByCoords = async (lat, lon) => {
-    try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric&lang=pt_br`
-      );
-      
-      if (!response.ok) {
-        throw new Error('Weather API error');
-      }
-      
-      const data = await response.json();
-      setWeather(data);
-      setLocation(data.name);
-    } catch (error) {
-      console.error('Error fetching weather by coords:', error);
-      // Fallback para cidade padrão
-      await fetchWeatherByCity('São Paulo');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchWeatherByCity = async (cityName) => {
-    try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric&lang=pt_br`
-      );
-      
-      if (!response.ok) {
-        throw new Error('Weather API error');
-      }
-      
-      const data = await response.json();
-      setWeather(data);
-      setLocation(data.name);
-    } catch (error) {
-      console.error('Error fetching weather by city:', error);
-      // Fallback para dados estáticos se a API falhar
-      setWeather({
-        main: { temp: 23 },
-        weather: [{ description: 'Parcialmente nublado' }]
-      });
-      setLocation(cityName);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getWeatherIcon = (weatherCode) => {
     // Mapear códigos do OpenWeatherMap para ícones
@@ -137,7 +93,7 @@ const WeatherWidget = () => {
     );
   }
 
-  if (error || !weather) {
+  if (!weather) {
     return (
       <div className="weather">
         <h3>
