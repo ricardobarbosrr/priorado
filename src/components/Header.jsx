@@ -54,6 +54,9 @@ const Header = () => {
             />
           </svg>
 
+          <Link to="/publicar" className="publish-link">
+            Publicar
+          </Link>
           <Link to="/login" className="login-btn">
             Login
           </Link>
