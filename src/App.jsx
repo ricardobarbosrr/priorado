@@ -6,7 +6,7 @@ import FeaturedArticle from './components/FeaturedArticle';
 import NewsGrid from './components/NewsGrid';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
-import Login from './components/Login';
+import Auth from './components/Auth';
 import PublishArticle from './components/PublishArticle';
 import { featuredArticle, sidebarNews } from './data/mockNews';
 import './index.css';
@@ -16,7 +16,8 @@ function App() {
     <Router>
       <div className="app">
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Auth />} />
+          <Route path="/cadastro" element={<Auth />} />
           <Route path="/publicar" element={<PublishArticle />} />
           <Route path="/" element={
             <>

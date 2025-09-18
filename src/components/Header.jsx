@@ -60,9 +60,9 @@ const Header = () => {
           <Link to="/login" className="login-btn">
             Login
           </Link>
-          <button className="subscribe-btn">
-            Assinar
-          </button>
+          <Link to="/cadastro" className="subscribe-btn">
+            Cadastre-se
+          </Link>
         </div>
       </div>
     </header>
