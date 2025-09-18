@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import SearchModal from './SearchModal';
+import { useCategory } from '../contexts/CategoryContext';
 
 const Navigation = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { selectedCategory, setSelectedCategory } = useCategory();
   
   const categories = [
     'Últimas',
@@ -24,7 +26,16 @@ const Navigation = () => {
             <a
               key={index}
               href="#"
-              className="nav-link"
+              className={`nav-link ${selectedCategory === category ? 'active' : ''}`}
+              onClick={(e) => {
+                e.preventDefault();
+                setSelectedCategory(category);
+              }}
+              style={{
+                fontWeight: selectedCategory === category ? '600' : '400',
+                borderBottom: selectedCategory === category ? '2px solid #dc2626' : 'none',
+                paddingBottom: selectedCategory === category ? '0.25rem' : '0'
+              }}
             >
               {category}
             </a>

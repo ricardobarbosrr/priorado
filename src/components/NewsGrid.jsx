@@ -1,17 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import NewsCard from './NewsCard';
 import { articlesAPI } from '../services/api';
+import { useCategory } from '../contexts/CategoryContext';
 
 const NewsGrid = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { selectedCategory } = useCategory();
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         setLoading(true);
-        const response = await articlesAPI.getAll({ limit: 12 });
+        let response;
+        
+        if (selectedCategory === 'Últimas') {
+          response = await articlesAPI.getAll({ limit: 12 });
+        } else {
+          response = await articlesAPI.getByCategory(selectedCategory, 12);
+        }
+        
         setArticles(response.articles || []);
       } catch (error) {
         console.error('Error fetching articles:', error);
@@ -22,7 +31,7 @@ const NewsGrid = () => {
     };
 
     fetchArticles();
-  }, []);
+  }, [selectedCategory]);
 
   if (loading) {
     return (

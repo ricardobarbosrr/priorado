@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { CategoryProvider } from './contexts/CategoryContext';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
 import FeaturedArticle from './components/FeaturedArticle';
@@ -28,7 +29,8 @@ function App() {
 
   return (
     <AuthProvider>
-      <Router>
+      <CategoryProvider>
+        <Router>
         <div className="app">
           <Routes>
           <Route path="/login" element={<Auth />} />
@@ -102,7 +104,8 @@ function App() {
           } />
           </Routes>
         </div>
-      </Router>
+        </Router>
+      </CategoryProvider>
     </AuthProvider>
   );
 }
