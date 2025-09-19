@@ -7,6 +7,7 @@ const Subscribe = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [email, setEmail] = useState('');
+  const [redirecting, setRedirecting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
@@ -23,7 +24,11 @@ const Subscribe = () => {
       
       // Adiciona o email como parâmetro na URL se estiver preenchido
       const emailParam = email ? `?prefilled_email=${encodeURIComponent(email)}` : '';
-      window.open(`${stripeLinks[plan]}${emailParam}`, '_blank');
+      setRedirecting(true);
+      // Pequeno atraso para garantir que o estado seja atualizado antes do redirecionamento
+      setTimeout(() => {
+        window.open(`${stripeLinks[plan]}${emailParam}`, '_blank');
+      }, 100);
     } catch (err) {
       setError('Ocorreu um erro ao processar sua assinatura. Tente novamente.');
       setLoading(false);
@@ -142,14 +147,14 @@ const Subscribe = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
+          {/*<div className="form-group">
             <input
               type="text"
               placeholder="Nome completo"
               required
               className="auth-input"
             />
-          </div>
+          </div>*/}
           <div className="form-group">
             <input
               type="email"
@@ -159,7 +164,7 @@ const Subscribe = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-          </div>
+          </div>{/*
           <div className="form-group">
             <input
               type="text"
@@ -169,7 +174,7 @@ const Subscribe = () => {
               pattern="\d{11}"
               title="Digite um CPF válido (apenas números)"
             />
-          </div>
+          </div>*/}
           <button
             type="submit"
             disabled={loading}
@@ -192,10 +197,27 @@ const Subscribe = () => {
             onMouseOver={(e) => e.target.style.backgroundColor = '#1d4ed8'}
             onMouseOut={(e) => e.target.style.backgroundColor = '#2563eb'}
           >
-            {loading ? 'Processando...' : `Pagar R$ ${selectedPlan.price} ${selectedPlan.period === 'mês' ? '/mês' : '/ano'}`}
+            {redirecting ? 'Abrindo checkout...' : (loading ? 'Processando...' : `Pagar R$ ${selectedPlan.price}${selectedPlan.period === 'mês' ? '/mês' : '/ano'}`)}
           </button>
         </form>
 
+        {redirecting && (
+          <div style={{
+            marginTop: '1.5rem',
+            padding: '1rem',
+            backgroundColor: '#f0fdf4',
+            border: '1px solid #86efac',
+            borderRadius: '0.5rem',
+            color: '#166534',
+            textAlign: 'center'
+          }}>
+            <p style={{ margin: '0', fontWeight: '500' }}>✔ Redirecionando para o checkout seguro</p>
+            <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.875rem' }}>
+              Após o processamento do pagamento, seus benefícios serão ativados automaticamente em até 5 minutos.
+            </p>
+          </div>
+        )}
+        
         <p style={{ textAlign: 'center', marginTop: '1.5rem', color: '#6b7280' }}>
           Ao assinar, você concorda com nossos{' '}
           <a href="/termos" style={{ color: '#2563eb', textDecoration: 'none' }}>Termos de Uso</a> e{' '}
