@@ -14,6 +14,7 @@ import ArticleView from './components/ArticleView';
 import Subscribe from './components/Subscribe';
 import TermosUso from './pages/TermosUso';
 import PoliticaPrivacidade from './pages/PoliticaPrivacidade';
+import SobreNos from './pages/SobreNos';
 import { sidebarNews } from './data/mockNews';
 import './index.css';
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="/assinar" element={<Subscribe />} />
           <Route path="/termos" element={<TermosUso />} />
           <Route path="/privacidade" element={<PoliticaPrivacidade />} />
+          <Route path="/sobre" element={<SobreNos />} />
           <Route path="/" element={
             <>
               <Header />
