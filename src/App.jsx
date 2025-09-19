@@ -15,6 +15,7 @@ import Subscribe from './components/Subscribe';
 import TermosUso from './pages/TermosUso';
 import PoliticaPrivacidade from './pages/PoliticaPrivacidade';
 import SobreNos from './pages/SobreNos';
+import Publicidade from './pages/Publicidade';
 import { sidebarNews } from './data/mockNews';
 import './index.css';
 
@@ -45,6 +46,7 @@ function App() {
           <Route path="/termos" element={<TermosUso />} />
           <Route path="/privacidade" element={<PoliticaPrivacidade />} />
           <Route path="/sobre" element={<SobreNos />} />
+          <Route path="/publicidade" element={<Publicidade />} />
           <Route path="/" element={
             <>
               <Header />
