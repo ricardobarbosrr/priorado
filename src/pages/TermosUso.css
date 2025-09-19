@@ -97,6 +97,19 @@
   margin-right: 0.5rem;
 }
 
+/* Estilos para ícones na Política de Privacidade */
+.inline-icon {
+  margin-right: 0.5rem;
+  color: #2563eb;
+  vertical-align: middle;
+  font-size: 1.1em;
+}
+
+.termos-section h2 {
+  display: flex;
+  align-items: center;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
   .termos-content {
