@@ -57,9 +57,10 @@ const Header = () => {
                 fontWeight: '500',
                 padding: '0.5rem',
                 borderRadius: '0.25rem',
-                transition: 'color 0.2s ease',
+                transition: 'all 0.2s ease',
                 opacity: 0.8,
-                display: isMobile ? 'none' : 'inline-block'
+                display: isMobile ? 'none' : 'inline-block',
+                marginRight: '0.5rem'
               }}
               onMouseEnter={(e) => {
                 e.target.style.color = '#b91c1c';
@@ -73,7 +74,7 @@ const Header = () => {
               Publicar
             </Link>
           )}
-          
+
           {/* Authentication buttons */}
           {isAuthenticated ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -113,7 +114,7 @@ const Header = () => {
               </Link>
               
               <Link 
-                to="/cadastro" 
+                to="/assinar" 
                 className="subscribe-btn"
               >
                 Assinar

@@ -1,0 +1,232 @@
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './Auth.css';
+
+const Subscribe = () => {
+  const [plan, setPlan] = useState('anual');
+  const [loading, setLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+
+  const handlePaymentClick = (e) => {
+    e.preventDefault();
+    setShowConfirmation(true);
+    setLoading(true);
+  };
+
+  const handleConfirmPayment = () => {
+    setError('');
+
+    try {
+      const stripeLinks = {
+        mensal: 'https://buy.stripe.com/9B6bJ14KLcPB8JcgR1ffy03',
+        anual: 'https://buy.stripe.com/8x2eVdb99aHt3oS44fffy02'
+      };
+      
+      const emailParam = email ? `?prefilled_email=${encodeURIComponent(email)}` : '';
+      window.open(`${stripeLinks[plan]}${emailParam}`, '_blank');
+      setShowConfirmation(false);
+      setLoading(false);
+    } catch (err) {
+      setError('Ocorreu um erro ao processar sua assinatura. Tente novamente.');
+      setLoading(false);
+    }
+  };
+
+  const plans = {
+    mensal: {
+      price: '29,90',
+      period: 'mês',
+      description: 'Plano mensal com acesso ilimitado a todo o conteúdo',
+      features: [
+        'Acesso a todas as notícias',
+        'Conteúdo exclusivo',
+        'Newsletter diária',
+        'Suporte prioritário',
+        'Acesso ao arquivo histórico'
+      ]
+    },
+    anual: {
+      price: '299',
+      period: 'ano',
+      description: 'Economize 20% com o plano anual',
+      features: [
+        'Tudo do plano mensal',
+        '2 meses grátis',
+        'Acesso a eventos exclusivos',
+        'Desconto em produtos parceiros',
+        'Conteúdo exclusivo para assinantes anuais'
+      ]
+    }
+  };
+
+  const selectedPlan = plans[plan];
+
+  return (
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="auth-header">
+          <img 
+            src="/PRIORADO.png" 
+            alt="PRIORADO" 
+            className="auth-logo"
+          />
+          <h1 className="auth-title">Assine o PRIORADO</h1>
+          <p className="auth-subtitle">Tenha acesso ilimitado ao melhor jornalismo investigativo do Brasil</p>
+        </div>
+
+        <div className="auth-container">
+          <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Escolha seu Plano</h2>
+        
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '1rem', marginBottom: '2rem' }}>
+            {Object.entries(plans).map(([key, planData]) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setPlan(key)}
+                style={{
+                  padding: '0.75rem 1.5rem',
+                  borderRadius: '0.5rem',
+                  border: `2px solid ${plan === key ? '#2563eb' : '#e5e7eb'}`,
+                  backgroundColor: plan === key ? '#eff6ff' : 'white',
+                  color: plan === key ? '#2563eb' : '#4b5563',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+              >
+                {planData.period === 'mês' ? 'Mensal' : 'Anual'}
+                <div style={{ fontSize: '0.875rem', fontWeight: 'normal', marginTop: '0.25rem' }}>
+                  R$ {planData.price}/{planData.period}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="plan-card" style={{
+          background: 'white',
+          borderRadius: '0.75rem',
+          padding: '2rem',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+          marginBottom: '2rem',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', marginBottom: '1rem' }}>
+            <span style={{ fontSize: '3rem', fontWeight: 800, color: '#1f2937' }}>
+              R${selectedPlan.price}
+            </span>
+            <span style={{ color: '#6b7280', marginLeft: '0.5rem' }}>
+              /{selectedPlan.period}
+            </span>
+          </div>
+          <p style={{ color: '#4b5563', marginBottom: '1.5rem' }}>
+            {selectedPlan.description}
+          </p>
+          <ul style={{ marginBottom: '2rem', paddingLeft: '1.25rem' }}>
+            {selectedPlan.features.map((feature, index) => (
+              <li key={index} style={{ color: '#4b5563', marginBottom: '0.5rem', listStyleType: 'disc' }}>
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="auth-form">
+          {error && <div className="error-message">{error}</div>}
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Nome completo"
+              required
+              className="auth-input"
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="email"
+              placeholder="E-mail"
+              required
+              className="auth-input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="CPF (somente números)"
+              required
+              className="auth-input"
+              pattern="\d{11}"
+              title="Digite um CPF válido (apenas números)"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={handlePaymentClick}
+            disabled={loading}
+            style={{
+              backgroundColor: '#2563eb',
+              color: 'white',
+              padding: '12px 24px',
+              borderRadius: '8px',
+              border: 'none',
+              fontSize: '16px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              width: '100%',
+              marginTop: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '48px'
+            }}
+            onMouseOver={(e) => { e.target.style.backgroundColor = '#1d4ed8' }}
+            onMouseOut={(e) => { e.target.style.backgroundColor = '#2563eb' }}
+          >
+            {loading ? 'Processando...' : `Pagar R$ ${selectedPlan.price} ${selectedPlan.period === 'mês' ? '/mês' : '/ano'}`}
+          </button>
+          
+          {showConfirmation && (
+            <div style={{ marginTop: '16px', textAlign: 'center' }}>
+              <p style={{ marginBottom: '12px', color: '#374151' }}>Você já realizou o pagamento?</p>
+              <button
+                type="button"
+                onClick={handleConfirmPayment}
+                style={{
+                  backgroundColor: '#10b981',
+                  color: 'white',
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  border: 'none',
+                  fontSize: '16px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  width: '100%',
+                  maxWidth: '300px',
+                  margin: '0 auto',
+                  display: 'block'
+                }}
+                onMouseOver={(e) => { e.target.style.backgroundColor = '#0d9f6e' }}
+                onMouseOut={(e) => { e.target.style.backgroundColor = '#10b981' }}
+              >
+                Confirmar pagamento
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <p style={{ textAlign: 'center', marginTop: '1.5rem', color: '#6b7280' }}>
+          Ao assinar, você concorda com nossos{' '}
+          <a href="/termos" style={{ color: '#2563eb', textDecoration: 'none' }}>Termos de Uso</a> e{' '}
+          <a href="/privacidade" style={{ color: '#2563eb', textDecoration: 'none' }}>Política de Privacidade</a>.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Subscribe;

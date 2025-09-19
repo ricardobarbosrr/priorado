@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import NewsCard from './NewsCard';
 import WeatherWidget from './WeatherWidget';
 import { articlesAPI } from '../services/api';
@@ -94,9 +95,9 @@ const Sidebar = () => {
             placeholder="Seu email"
             className="newsletter-input"
           />
-          <button className="newsletter-btn">
+          <Link to="/assinar" className="newsletter-btn" style={{ textDecoration: 'none', color: 'inherit' }}>
             Assinar
-          </button>
+          </Link>
         </div>
       </div>
 

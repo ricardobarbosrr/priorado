@@ -11,6 +11,7 @@ import Footer from './components/Footer';
 import Auth from './components/Auth';
 import PublishArticle from './components/PublishArticle';
 import ArticleView from './components/ArticleView';
+import Subscribe from './components/Subscribe';
 import { sidebarNews } from './data/mockNews';
 import './index.css';
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/cadastro" element={<Auth />} />
           <Route path="/publicar" element={<PublishArticle />} />
           <Route path="/artigo/:id" element={<ArticleView />} />
+          <Route path="/assinar" element={<Subscribe />} />
           <Route path="/" element={
             <>
               <Header />

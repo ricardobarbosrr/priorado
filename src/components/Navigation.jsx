@@ -15,7 +15,9 @@ const Navigation = () => {
     'Esportes',
     'Cultura',
     'Saúde',
-    'Opinião'
+    'Opinião',
+    'Artigos',
+    'Turismo'
   ];
 
   return (
