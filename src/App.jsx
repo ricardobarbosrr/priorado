@@ -12,6 +12,7 @@ import Auth from './components/Auth';
 import PublishArticle from './components/PublishArticle';
 import ArticleView from './components/ArticleView';
 import Subscribe from './components/Subscribe';
+import TermosUso from './pages/TermosUso';
 import { sidebarNews } from './data/mockNews';
 import './index.css';
 
@@ -39,6 +40,7 @@ function App() {
           <Route path="/publicar" element={<PublishArticle />} />
           <Route path="/artigo/:id" element={<ArticleView />} />
           <Route path="/assinar" element={<Subscribe />} />
+          <Route path="/termos" element={<TermosUso />} />
           <Route path="/" element={
             <>
               <Header />
