@@ -1,0 +1,118 @@
+.ticker-tape {
+  background-color: #1a1a1a;
+  color: #fff;
+  padding: 8px 0;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  border-top: 1px solid #2d2d2d;
+  border-bottom: 1px solid #2d2d2d;
+  display: flex;
+  align-items: center;
+}
+
+.ticker-label {
+  background-color: #dc2626;
+  color: white;
+  font-weight: 600;
+  padding: 4px 12px;
+  margin-right: 15px;
+  white-space: nowrap;
+  font-size: 12px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ticker-container {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+.ticker-content {
+  display: flex;
+  white-space: nowrap;
+  transition: transform 0.1s linear;
+  will-change: transform;
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  border-right: 1px solid #2d2d2d;
+}
+
+.ticker-item:last-child {
+  border-right: none;
+}
+
+.symbol {
+  font-weight: 600;
+  margin-right: 5px;
+  color: #f3f4f6;
+}
+
+.price {
+  margin: 0 8px;
+  font-family: 'Roboto Mono', monospace;
+  color: #f9fafb;
+}
+
+.change {
+  font-weight: 500;
+  font-family: 'Roboto Mono', monospace;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.change.positive {
+  color: #10b981;
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+.change.negative {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* Loading and error states */
+.ticker-tape.loading .ticker-content,
+.ticker-tape.error .ticker-content {
+  justify-content: center;
+  padding: 5px 0;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .ticker-tape {
+    font-size: 12px;
+  }
+  
+  .ticker-label {
+    padding: 2px 8px;
+    font-size: 10px;
+    margin-right: 10px;
+  }
+  
+  .ticker-item {
+    padding: 0 10px;
+  }
+  
+  .change {
+    font-size: 10px;
+    padding: 1px 4px;
+  }
+}
+
+/* Animation for the ticker */
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
