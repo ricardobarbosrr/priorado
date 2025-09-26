@@ -83,6 +83,14 @@ export const authAPI = {
     return await apiRequest('/user/profile');
   },
 
+  // Update user profile
+  updateProfile: async (userData) => {
+    return await apiRequest('/user/profile', {
+      method: 'PUT',
+      body: JSON.stringify(userData)
+    });
+  },
+
   // Check if user is authenticated
   isAuthenticated: () => {
     return !!getAuthToken();

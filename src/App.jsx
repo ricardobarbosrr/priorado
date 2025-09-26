@@ -16,6 +16,7 @@ import TermosUso from './pages/TermosUso';
 import PoliticaPrivacidade from './pages/PoliticaPrivacidade';
 import SobreNos from './pages/SobreNos';
 import Publicidade from './pages/Publicidade';
+import Perfil from './pages/Perfil';
 import { sidebarNews } from './data/mockNews';
 import './index.css';
 
@@ -52,6 +53,7 @@ function App() {
           <Route path="/privacidade" element={<PoliticaPrivacidade />} />
           <Route path="/sobre" element={<SobreNos />} />
           <Route path="/publicidade" element={<Publicidade />} />
+          <Route path="/perfil" element={<Perfil />} />
           <Route path="/" element={
             <>
               <Header />

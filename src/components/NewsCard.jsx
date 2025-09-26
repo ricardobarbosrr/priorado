@@ -81,7 +81,10 @@ const NewsCard = ({ article, variant = 'default' }) => {
         
         {article.summary && (
           <p className="news-summary">
-            {article.summary}
+            {article.summary.split(' ').length > 35 || article.summary.length > 250 
+              ? `${article.summary.substring(0, 250).split(' ').slice(0, 35).join(' ')}...`
+              : article.summary
+            }
           </p>
         )}
         

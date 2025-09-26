@@ -28,7 +28,11 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   role: { type: String, enum: ['user', 'admin', 'editor'], default: 'user' },
   avatar: { type: String, default: '' },
-  createdAt: { type: Date, default: Date.now }
+  bio: { type: String, default: '' },
+  location: { type: String, default: '' },
+  website: { type: String, default: '' },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
 const User = mongoose.model('User', userSchema);
@@ -285,15 +289,67 @@ app.delete('/api/articles/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Get User Profile (Protected)
-app.get('/api/user/profile', authenticateToken, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.userId).select('-password');
-    res.json(user);
-  } catch (error) {
-    res.status(500).json({ message: 'Erro ao buscar perfil', error: error.message });
-  }
-});
+// User Profile Routes
+app.route('/api/user/profile')
+  // Get user profile
+  .get(authenticateToken, async (req, res) => {
+    try {
+      const user = await User.findById(req.user.userId).select('-password');
+      if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+      res.json(user);
+    } catch (error) {
+      console.error('Erro ao buscar perfil:', error);
+      res.status(500).json({ message: 'Erro ao buscar perfil', error: error.message });
+    }
+  })
+  // Update user profile
+  .put(authenticateToken, async (req, res) => {
+    try {
+      const { name, email, bio, location, website, avatar } = req.body;
+      
+      // Get current user
+      const currentUser = await User.findById(req.user.userId);
+      if (!currentUser) {
+        return res.status(404).json({ message: 'Usuário não encontrado' });
+      }
+
+      // Update user data
+      const updateData = {
+        name: name || currentUser.name,
+        bio: bio || currentUser.bio,
+        location: location || currentUser.location,
+        website: website || currentUser.website,
+        avatar: avatar || currentUser.avatar,
+        updatedAt: new Date()
+      };
+
+      // Only update email if it's different and user is admin
+      if (email && email !== currentUser.email && req.user.role === 'admin') {
+        updateData.email = email;
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(
+        req.user.userId,
+        { $set: updateData },
+        { new: true, runValidators: true }
+      ).select('-password');
+
+      if (!updatedUser) {
+        return res.status(500).json({ message: 'Erro ao atualizar perfil' });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: 'Perfil atualizado com sucesso',
+        user: updatedUser
+      });
+    } catch (error) {
+      console.error('Erro ao atualizar perfil:', error);
+      res.status(500).json({ message: 'Erro ao atualizar perfil', error: error.message });
+    }
+  });
 
 // Health Check
 app.get('/api/health', (req, res) => {

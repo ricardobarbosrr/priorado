@@ -79,9 +79,21 @@ const Header = () => {
           {isAuthenticated ? (
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               {!isMobile && (
-                <span style={{ color: '#374151', fontSize: '0.875rem', display: isMobile ? 'none' : 'inline' }}>
-                  Olá, {user?.name || user?.email}
-                </span>
+                <Link 
+                to="/perfil"
+                style={{
+                  color: '#374151',
+                  fontSize: '0.875rem',
+                  display: isMobile ? 'none' : 'inline',
+                  textDecoration: 'none',
+                  cursor: 'pointer',
+                  transition: 'color 0.2s ease'
+                }}
+                onMouseEnter={(e) => e.target.style.color = '#dc2626'}
+                onMouseLeave={(e) => e.target.style.color = '#374151'}
+              >
+                Olá, {user?.name || user?.email}
+              </Link>
               )}
               {!isMobile && (
                 <button 
